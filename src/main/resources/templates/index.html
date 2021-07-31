@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.21.1/babel.min.js"></script>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+<div th:replace="header :: header"></div>
+<div id="app" class="body_class">
+    <form class="form_class">
+        <h3>Input your url to short it:</h3>
+        <div v-if="empty_url" class="error_block_class">Input URL!</div>
+        <div v-if="invalid_url" class="error_block_class">Invalid URL!</div>
+        <input class="inputurl_class" type="text" id="input_url" v-model="input_url" />
+        <button v-on:click="button_click" class="button_class">Shorten!</button>
+    </form>
+    <div v-if="show_info_block" class="info_block_class">
+        <h3>Your short link:</h3>
+        <a :href="short_link" target="_blank">{{short_link}}</a>
+        <p>Your shortened link goes to: {{original_link}}</p>
+    </div>
+    <div v-if="show_error_block" class="info_block_class">
+        <h3 style="color: red;">oops something went wrong</h3>
+        <p>{{short_link}}</p>
+    </div>
+</div>
+<script>
+    function getCookie(name) {
+        let matches = document.cookie.match(new RegExp(
+            "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        ));
+        return matches ? decodeURIComponent(matches[1]) : "";
+    }
+</script>
+<script contextmenu="text/babel">
+    var url_check_regex = /^(?:http(s)?:\/\/)?[а-яА-ЯA-Za-z0-9_.-]+(?:\.[а-яА-ЯA-Za-z0-9_\.-]+)+[а-яА-ЯA-Za-z0-9_\-\._~:\/?#[\]@@!\$&'\(\)\*\+,;=.%]+$/;
+    // инициализация vuejs
+    const app = new Vue({
+        el: '#app',
+        data: {
+            empty_url: false,
+            invalid_url: false,
+            input_url: null,
+            show_info_block: false,
+            show_error_block: false,
+            short_link: "",
+            more_information: "",
+            original_link: "",
+        },
+        methods: {
+            button_click: async function (e) {
+                e.preventDefault();
+                var target_url = this.input_url;
+                // снимаем условия видимости компонентов
+                this.empty_url = false;
+                this.invalid_url = false;
+                this.show_error_block = false;
+                this.show_info_block = false;
+                if (target_url == null || target_url == 0) {
+                    this.empty_url = true;
+                    return;
+                }
+                if (target_url.match(url_check_regex) == null) {
+                    this.invalid_url = true;
+                    return;
+                }
+                this.show_info_block = false;
+                // делаем асинхронный запрос к бекенду
+                var req = {}
+                req.url = target_url;
+                let response = await fetch("/api/create", {
+                    method: 'POST',
+                    body: JSON.stringify(req),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    } });
+                if (response.ok) {
+                    // получаем ответ и парсим json
+                    let jsonText = await response.text();
+                    let jsonObj = JSON.parse(jsonText);
+                    this.show_info_block = true;
+                    this.short_link = jsonObj.m1;
+                    this.original_link = jsonObj.m2;
+                    var cookie = getCookie("links");
+                    // устанавливаем куки для отображения раздела links
+                    document.cookie = "links=" + cookie + "&" + jsonObj.m1.substring(1);
+                }
+                else {
+                    let jsonText = await response.text();
+                    let jsonObj = JSON.parse(jsonText);
+                    this.show_error_block = true;
+                    this.short_link = jsonObj.m1;
+                }
+            }
+        }
+    })
+
+</script>
+</body>
+</html>
