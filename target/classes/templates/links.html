@@ -16,6 +16,11 @@
       <td><h2>Short Link</h2></td>
       <td><h2>Create Date</h2></td>
       <td><h2>Last Redirect Date</h2></td>
+    <tr th:each="url : ${urls}">
+      <td><p th:utext="${url.originalUrl}"></p></td>
+      <td><p th:utext="${url.shortUrl}"></p></td>
+      <td><p th:utext="${url.createDate}"></p></td>
+      <td><p th:utext="${url.lastRedirectDate}"></p></td>
     </tr>
   </table>
 </div>

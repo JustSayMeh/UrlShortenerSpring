@@ -40,16 +40,6 @@ public class URLEntity {
         this.originalUrl = originalUrl;
     }
 
-    public static URLEntity generateFromURL(String original_url)
-    {
-        URLEntity urlEntity = new URLEntity();
-        urlEntity.setOriginalUrl(original_url);
-        urlEntity.setOriginalUrl("short");
-        urlEntity.setCreateDate(new Date());
-        //urlEntity.setId(0l);
-        return urlEntity;
-    }
-
     public Date getCreateDate() {
         return createDate;
     }
@@ -64,5 +54,14 @@ public class URLEntity {
 
     public void setLastRedirectDate(Date lastRedirectDate) {
         this.lastRedirectDate = lastRedirectDate;
+    }
+
+    public static URLEntity generateFromURL(String original_url, String short_url)
+    {
+        URLEntity urlEntity = new URLEntity();
+        urlEntity.setOriginalUrl(original_url);
+        urlEntity.setShortUrl(short_url);
+        urlEntity.setCreateDate(new Date());
+        return urlEntity;
     }
 }
