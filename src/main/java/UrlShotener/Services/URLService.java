@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 public class URLService {
     @Autowired
     private URLRepository urlRepository;
-
     public boolean contains_short_url(String short_url)
     {
         return urlRepository.findByShortUrl(short_url).size() != 0;
