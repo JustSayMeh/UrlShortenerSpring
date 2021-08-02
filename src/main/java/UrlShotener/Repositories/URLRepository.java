@@ -16,6 +16,4 @@ public interface URLRepository extends JpaRepository<URLEntity, Long> {
     int setLastRedirectDate(String short_url, Date redirect_date);
     List<URLEntity> findByShortUrl(String short_url);
     List<URLEntity> findByOriginalUrl(String original_url);
-
-
 }

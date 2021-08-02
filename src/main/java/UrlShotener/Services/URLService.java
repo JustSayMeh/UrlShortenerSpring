@@ -9,12 +9,12 @@ import org.springframework.stereotype.Service;
 public class URLService {
     @Autowired
     private URLRepository urlRepository;
-    public boolean contains_short_url(String short_url)
+    public boolean containsShortUrl(String short_url)
     {
         return urlRepository.findByShortUrl(short_url).size() != 0;
     }
 
-    public URLEntity get_by_short_url(String short_url)
+    public URLEntity getByShortUrl(String short_url)
     {
         return urlRepository.findByShortUrl(short_url)
                 .stream()
@@ -22,11 +22,11 @@ public class URLService {
                 .orElseThrow(RuntimeException::new);
     }
 
-    public boolean contains_original_url(String original_url)
+    public boolean containsOriginalUrl(String original_url)
     {
         return urlRepository.findByOriginalUrl(original_url).size() != 0;
     }
-    public URLEntity get_by_original_url(String original_url)
+    public URLEntity getByOriginalUrl(String original_url)
     {
         return urlRepository.findByOriginalUrl(original_url)
                 .stream()

@@ -18,7 +18,7 @@ public class ApiController {
     ApiCreateHandler handler;
     @PostMapping("/api/create")
     public ResponseJson create(@RequestBody RequestJson req, HttpServletResponse response) {
-        handler.init(req.url, req.short_url);
+        handler.init(req.url, req.shortUrl);
         try {
             return handler.handle();
         } catch (MalformedURLException e) {

@@ -15,51 +15,51 @@ import java.net.MalformedURLException;
 public class ApiCreateHandler {
     private final URLService service;
     private boolean is_init = false;
-    private String url, short_url;
+    private String url, shortUrl;
     public ApiCreateHandler(URLService service){
         this.service = service;
     }
     public void init(String url, String short_url)
     {
         this.url = url;
-        this.short_url = short_url;
+        this.shortUrl = short_url;
         is_init = true;
     }
 
     public ResponseJson handle() throws MalformedURLException {
-            validate_origin_url();
-            if (short_url_is_empty())
+            validateOriginUrl();
+            if (shortUrlIsEmpty())
             {
-                set_short_url_or_load_from_db();
+                setShortUrlOrLoadFromDb();
             }
             else
             {
-                try_to_set_short_url_from_user();
+                tryToSetShortUrlFromUser();
             }
-        return new ResponseJson("X" + short_url, url);
+        return new ResponseJson("X" + shortUrl, url);
     }
 
-    private void validate_origin_url() throws MalformedURLException {
+    private void validateOriginUrl() throws MalformedURLException {
         URLValidator uRlValidator = new URLValidator(url);
         url = uRlValidator.toString();
     }
 
-    private boolean short_url_is_empty() {
-        return short_url == null;
+    private boolean shortUrlIsEmpty() {
+        return shortUrl == null;
     }
-    private void set_short_url_or_load_from_db()
+    private void setShortUrlOrLoadFromDb()
     {
-        if (!service.contains_original_url(url))
+        if (!service.containsOriginalUrl(url))
         {
-            short_url = Shortener.do_short(url, (str) -> service.contains_short_url(str));
-            service.insert(URLEntity.generateFromURL(url, short_url));
+            shortUrl = Shortener.doShort(url, (str) -> service.containsShortUrl(str));
+            service.insert(URLEntity.generateFromURL(url, shortUrl));
         }
         else
         {
-            short_url = service.get_by_original_url(url).getShortUrl();
+            shortUrl = service.getByOriginalUrl(url).getShortUrl();
         }
     }
-    private void try_to_set_short_url_from_user()
+    private void tryToSetShortUrlFromUser()
     {
         // TODO
     }

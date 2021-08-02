@@ -8,24 +8,24 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
 @Component
-@Scope("Prototype")
+@Scope("prototype")
 public class ViewRedirectHandler {
     @Autowired
     private final URLService service;
     private String short_url;
-    private boolean is_init = false;
+    private boolean isInit = false;
     public ViewRedirectHandler(URLService service){
         this.service = service;
     }
 
     public void init(String short_url){
         this.short_url = short_url;
-        is_init = true;
+        isInit = true;
     }
     public ModelAndView handle(){
-        if(service.contains_short_url(short_url))
+        if(service.containsShortUrl(short_url))
         {
-            URLEntity entity = service.get_by_short_url(short_url);
+            URLEntity entity = service.getByShortUrl(short_url);
             return new ModelAndView("redirect:" + entity.getOriginalUrl());
         }
         return new ModelAndView("redirect:/");

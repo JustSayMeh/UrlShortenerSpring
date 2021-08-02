@@ -1,9 +1,8 @@
 package UrlShotener.Controllers;
 
-import UrlShotener.Entities.URLEntity;
+import UrlShotener.Handlers.ViewLinksHandler;
 import UrlShotener.Handlers.ViewRedirectHandler;
 import UrlShotener.Services.URLService;
-import com.sun.jndi.toolkit.url.Uri;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,22 +10,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Controller
 public class ViewController {
     @Autowired
-    private URLService service;
+    ViewRedirectHandler redirectHandler;
     @Autowired
-    ViewRedirectHandler redirect_handler;
+    ViewLinksHandler linksHandler;
     @GetMapping("/")
     public String index(Model model)
     {
@@ -36,33 +27,8 @@ public class ViewController {
     @GetMapping("/links")
     public String links(Model model, HttpServletRequest request)
     {
-        List<URLEntity> urls = new ArrayList<>();
-
-        Optional<Cookie> links_optional = Arrays.stream(
-                    Optional.ofNullable(request.getCookies())
-                    .orElseGet(() -> new Cookie[0])
-                )
-                .filter(str -> str.getName().equals("links"))
-                .findFirst();
-        if (links_optional.isPresent())
-        {
-            String[] links = links_optional.get().getValue().split("\\&");
-            urls = Arrays.stream(links)
-                    .filter(link -> service.contains_short_url(link))
-                    .map(link -> service.get_by_short_url(link))
-                    .collect(Collectors.toList());
-        }
-        model.addAttribute("module", "links");
-        model.addAttribute("urls", urls);
-
-        try {
-            Uri uri = new Uri(request.getRequestURL().toString());
-            model.addAttribute("host_domain", uri.getHost());
-            model.addAttribute("host_scheme", uri.getScheme());
-            model.addAttribute("host_port", uri.getPort());
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+        linksHandler.init(request, model);
+        linksHandler.handle();
         return "links";
     }
     @GetMapping("/about")
@@ -73,11 +39,11 @@ public class ViewController {
     }
 
     @GetMapping("/X{short_url}")
-    public ModelAndView redirect_short_url(
+    public ModelAndView redirectShortUrl(
             @PathVariable(value="short_url")  String short_url
             )
     {
-        redirect_handler.init(short_url);
-        return redirect_handler.handle();
+        redirectHandler.init(short_url);
+        return redirectHandler.handle();
     }
 }

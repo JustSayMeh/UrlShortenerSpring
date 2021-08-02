@@ -7,17 +7,17 @@ import java.nio.charset.Charset;
 import java.util.function.Predicate;
 
 public class Shortener {
-    public static String do_short(String original_string, Predicate<String> predicate)
+    public static String doShort(String originalString, Predicate<String> predicate)
     {
-        String sha256 = DigestUtils.sha256Hex(original_string);
-        String short_string = Base58.encode(sha256.getBytes(Charset.defaultCharset()))
+        String sha256 = DigestUtils.sha256Hex(originalString);
+        String shortString = Base58.encode(sha256.getBytes(Charset.defaultCharset()))
                 .substring(0, 7);
-        while(predicate.test(short_string))
+        while(predicate.test(shortString))
         {
-            short_string = DigestUtils.sha256Hex(short_string);
-            short_string = Base58.encode(short_string.getBytes(Charset.defaultCharset()))
+            shortString = DigestUtils.sha256Hex(shortString);
+            shortString = Base58.encode(shortString.getBytes(Charset.defaultCharset()))
                     .substring(0, 7);
         }
-        return short_string;
+        return shortString;
     }
 }
