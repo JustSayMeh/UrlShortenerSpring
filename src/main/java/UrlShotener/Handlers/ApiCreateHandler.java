@@ -1,12 +1,10 @@
-package UrlShotener.RequestHandlers;
+package UrlShotener.Handlers;
 
 import UrlShotener.Entities.URLEntity;
 import UrlShotener.Services.URLService;
 import UrlShotener.Utils.ResponseJson;
 import UrlShotener.Utils.Shortener;
 import UrlShotener.Utils.URLValidator;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 

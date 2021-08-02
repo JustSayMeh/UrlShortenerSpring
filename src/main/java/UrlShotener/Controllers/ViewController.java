@@ -1,6 +1,7 @@
 package UrlShotener.Controllers;
 
 import UrlShotener.Entities.URLEntity;
+import UrlShotener.Handlers.ViewRedirectHandler;
 import UrlShotener.Services.URLService;
 import com.sun.jndi.toolkit.url.Uri;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,8 @@ import java.util.stream.Collectors;
 public class ViewController {
     @Autowired
     private URLService service;
+    @Autowired
+    ViewRedirectHandler redirect_handler;
     @GetMapping("/")
     public String index(Model model)
     {
@@ -74,11 +77,7 @@ public class ViewController {
             @PathVariable(value="short_url")  String short_url
             )
     {
-        if(service.contains_short_url(short_url))
-        {
-            URLEntity entity = service.get_by_short_url(short_url);
-            return new ModelAndView("redirect:" + entity.getOriginalUrl());
-        }
-        return new ModelAndView("redirect:/");
+        redirect_handler.init(short_url);
+        return redirect_handler.handle();
     }
 }
