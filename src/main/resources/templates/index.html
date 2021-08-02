@@ -85,7 +85,8 @@
                     this.original_link = jsonObj.m2;
                     var cookie = getCookie("links");
                     // устанавливаем куки для отображения раздела links
-                    document.cookie = "links=" + cookie + "&" + jsonObj.m1.substring(1);
+                    if(!cookie.includes(jsonObj.m1.substring(1)))
+                        document.cookie = "links=" + cookie + jsonObj.m1.substring(1) + "&";
                 }
                 else {
                     let jsonText = await response.text();

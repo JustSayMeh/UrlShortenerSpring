@@ -31,20 +31,17 @@ class URlValidator{
     private String url;
     public URlValidator(String url) throws MalformedURLException {
         this.url = url;
-        reduceWWW();
         setHttp();
-        uri = new Uri(url);
+        reduceWWW();
+        uri = new Uri(this.url);
         String host = uri.getHost();
-        url = url.replace(host, host.toLowerCase(Locale.ROOT));
+        this.url = this.url.replace(host, host.toLowerCase(Locale.ROOT));
     }
     private void setHttp(){
-        if (!url.contains("http") && !url.contains("https"))
+        if (!url.contains("http://") && !url.contains("https://"))
             url = "https://" + url;
     }
-    private void reduceWWW()
-    {
-        url = url.replaceAll("://www\\.", "://");
-    }
+    private void reduceWWW() { url = url.replaceAll("://www\\.", "://"); }
     public String toString()
     {
         return url;
@@ -58,20 +55,31 @@ public class ApiController {
     @PostMapping("/api/create")
     public Response create(@RequestBody Request req,
                            HttpServletRequest request,
-                           HttpServletResponse response) throws MalformedURLException {
+                           HttpServletResponse response) {
         String url = req.url;
         String short_url = req.short_url;
         String links = "";
-        if (short_url == null)
-        {
-            try {
-                URlValidator uRlValidator = new URlValidator(url);
-                url = uRlValidator.toString();
-                short_url = Shortener.do_short(url, (str) -> service.contains_short_url(str));
-                service.insert(URLEntity.generateFromURL(url, short_url));
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
+        try {
+            URlValidator uRlValidator = new URlValidator(url);
+            url = uRlValidator.toString();
+            if (short_url == null)
+            {
+                if (!service.contains_original_url(url))
+                {
+                    short_url = Shortener.do_short(url, (str) -> service.contains_short_url(str));
+                    service.insert(URLEntity.generateFromURL(url, short_url));
+                }
+                else
+                {
+                    short_url = service.get_by_original_url(url).getShortUrl();
+                }
             }
+            else
+            {
+
+            }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
         }
         return new Response(req.url, "X" + short_url);
     }
