@@ -1,4 +1,4 @@
-package UrlShotener.Configuration;
+package UrlShortener.Configuration;
 
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.function.SQLFunctionTemplate;

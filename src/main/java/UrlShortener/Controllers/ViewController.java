@@ -1,8 +1,7 @@
-package UrlShotener.Controllers;
+package UrlShortener.Controllers;
 
-import UrlShotener.Handlers.ViewLinksHandler;
-import UrlShotener.Handlers.ViewRedirectHandler;
-import UrlShotener.Services.URLService;
+import UrlShortener.Handlers.ViewLinksHandler;
+import UrlShortener.Handlers.ViewRedirectHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

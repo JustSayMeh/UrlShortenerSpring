@@ -1,4 +1,4 @@
-package UrlShotener;
+package UrlShortener;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

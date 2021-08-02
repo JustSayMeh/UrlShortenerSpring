@@ -1,4 +1,4 @@
-package UrlShotener.Utils;
+package UrlShortener.Utils;
 
 public class ResponseJson {
     public String m1, m2;

@@ -1,8 +1,8 @@
-package UrlShotener.Controllers;
+package UrlShortener.Controllers;
 
-import UrlShotener.Handlers.ApiCreateHandler;
-import UrlShotener.Utils.RequestJson;
-import UrlShotener.Utils.ResponseJson;
+import UrlShortener.Handlers.ApiCreateHandler;
+import UrlShortener.Utils.RequestJson;
+import UrlShortener.Utils.ResponseJson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,6 +1,6 @@
-package UrlShotener.Repositories;
+package UrlShortener.Repositories;
 
-import UrlShotener.Entities.URLEntity;
+import UrlShortener.Entities.URLEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

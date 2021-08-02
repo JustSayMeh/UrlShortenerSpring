@@ -1,7 +1,7 @@
-package UrlShotener.Handlers;
+package UrlShortener.Handlers;
 
-import UrlShotener.Entities.URLEntity;
-import UrlShotener.Services.URLService;
+import UrlShortener.Entities.URLEntity;
+import UrlShortener.Services.URLService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;

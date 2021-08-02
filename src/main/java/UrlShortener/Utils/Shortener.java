@@ -1,4 +1,4 @@
-package UrlShotener.Utils;
+package UrlShortener.Utils;
 
 import com.google.bitcoin.core.Base58;
 import org.apache.commons.codec.digest.DigestUtils;

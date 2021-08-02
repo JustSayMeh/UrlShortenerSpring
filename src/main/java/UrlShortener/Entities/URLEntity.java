@@ -1,4 +1,4 @@
-package UrlShotener.Entities;
+package UrlShortener.Entities;
 
 import javax.persistence.*;
 import java.util.Date;

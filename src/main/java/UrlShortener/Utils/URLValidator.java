@@ -1,4 +1,4 @@
-package UrlShotener.Utils;
+package UrlShortener.Utils;
 
 import com.sun.jndi.toolkit.url.Uri;
 
