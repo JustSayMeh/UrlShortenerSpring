@@ -21,7 +21,8 @@ public class ApiController {
         handler.init(req.url, req.shortUrl);
         try {
             return handler.handle();
-        } catch (MalformedURLException e) {
+        }
+        catch (MalformedURLException e) {
             e.printStackTrace();
             response.setStatus(400);
             return new ResponseJson("Invalid url", "");

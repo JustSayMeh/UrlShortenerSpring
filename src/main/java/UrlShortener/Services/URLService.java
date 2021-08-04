@@ -5,6 +5,9 @@ import UrlShortener.Repositories.URLRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.Date;
+
 @Service
 public class URLService {
     @Autowired
@@ -35,5 +38,9 @@ public class URLService {
     }
     public void insert(URLEntity urlEntity){
         urlRepository.save(urlEntity);
+    }
+    @Transactional
+    public void updateRedirectTime(String shortUrl, Date date){
+        urlRepository.setLastRedirectDate(shortUrl, date);
     }
 }

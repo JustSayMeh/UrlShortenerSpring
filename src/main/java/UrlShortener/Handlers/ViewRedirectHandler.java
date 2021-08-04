@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Date;
+
 @Component
 @Scope("prototype")
 public class ViewRedirectHandler {
@@ -26,6 +28,7 @@ public class ViewRedirectHandler {
         if(service.containsShortUrl(short_url))
         {
             URLEntity entity = service.getByShortUrl(short_url);
+            service.updateRedirectTime(short_url,  new Date());
             return new ModelAndView("redirect:" + entity.getOriginalUrl());
         }
         return new ModelAndView("redirect:/");
