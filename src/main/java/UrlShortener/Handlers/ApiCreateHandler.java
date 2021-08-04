@@ -61,6 +61,11 @@ public class ApiCreateHandler {
     }
     private void tryToSetShortUrlFromUser()
     {
-        // TODO
+        if (service.containsShortUrl(shortUrl))
+            throw new IllegalArgumentException();
+
+
+        service.insert(URLEntity.generateFromURL(url, shortUrl));
+
     }
 }

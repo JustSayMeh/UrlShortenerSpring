@@ -27,5 +27,11 @@ public class ApiController {
             response.setStatus(400);
             return new ResponseJson("Invalid url", "");
         }
+        catch (IllegalArgumentException e)
+        {
+            e.printStackTrace();
+            response.setStatus(400);
+            return new ResponseJson("Short link already contained!", "");
+        }
     }
 }

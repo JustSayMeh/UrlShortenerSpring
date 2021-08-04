@@ -14,7 +14,13 @@
         <div v-if="empty_url" class="error_block_class">Input URL!</div>
         <div v-if="invalid_url" class="error_block_class">Invalid URL!</div>
         <input class="inputurl_class" type="text" id="input_url" v-model="input_url" />
+        <div v-if="show_custom_block" class="custom_block_class">
+            <h3>Input your short url:</h3>
+            <input class="input_custom_url_class" type="text" id="input_custom_short_url" v-model="input_custom_short_url" />
+        </div>
         <button v-on:click="button_click" class="button_class">Shorten!</button>
+        <a v-on:click="open_custom_block" href="#" v-if="!show_custom_block">set custom link</a>
+
     </form>
     <div v-if="show_info_block" class="info_block_class">
         <h3>Your short link:</h3>
@@ -43,8 +49,10 @@
             empty_url: false,
             invalid_url: false,
             input_url: null,
+            input_custom_short_url: null,
             show_info_block: false,
             show_error_block: false,
+            show_custom_block: false,
             short_link: "",
             more_information: "",
             original_link: "",
@@ -70,6 +78,8 @@
                 // делаем асинхронный запрос к бекенду
                 var req = {}
                 req.url = target_url;
+                if (this.input_custom_short_url != null && this.input_custom_short_url.length > 0)
+                    req.shortUrl = this.input_custom_short_url;
                 let response = await fetch("/api/create", {
                     method: 'POST',
                     body: JSON.stringify(req),
@@ -94,6 +104,10 @@
                     this.show_error_block = true;
                     this.short_link = jsonObj.m1;
                 }
+            },
+            open_custom_block : function (e){
+                e.preventDefault();
+                this.show_custom_block = true;
             }
         }
     })
